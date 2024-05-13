@@ -5,7 +5,8 @@
 import React, { useState } from 'react';
 import type { NextPage } from "next";
 import { notification } from "~~/utils/scaffold-eth";
-import { ipfsClient } from "../../utils/ipfs/ipfsClient";
+import ipfsClient from "../../utils/ipfs/ipfsClient";
+import { useScaffoldWriteContract } from "~~/hooks/scaffold-eth";
 
 
 const IpfsUpload: NextPage = () => {
@@ -64,7 +65,7 @@ const IpfsUpload: NextPage = () => {
       const tokenURI = path;
       await mintImage(tokenURI);
       notification.remove(notificationId);
-      notification.success("Minted IPFS");
+      notification.success("Minted NFT with IPFS");
     } catch (error) {
       console.error("Minting Error:", error);
       notification.remove(notificationId);
@@ -72,12 +73,15 @@ const IpfsUpload: NextPage = () => {
     }
     setIsWaiting(false);
   };
-
+  const { writeContractAsync: writeYourContractAsync } = useScaffoldWriteContract("NFTLetter");
   const mintImage = async (tokenURI) => {
     try {
       setMinting(true);
-      const txResponse = await nftContract.safeMint(mint_to, tokenURI);
-      await txResponse.wait();
+      await writeYourContractAsync({
+        functionName: "safeMint",
+        args: [mint_to, tokenURI],
+      });
+      // const txResponse = await nftContract.safeMint(mint_to, tokenURI);
       alert('NFT minted successfully!');
     } catch (error) {
       console.error('Failed to mint NFT:', error);

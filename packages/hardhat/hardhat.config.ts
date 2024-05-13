@@ -12,12 +12,12 @@ import "hardhat-deploy-ethers";
 
 // If not set, it uses ours Alchemy's default API key.
 // You can get your own at https://dashboard.alchemyapi.io
-const providerApiKey = process.env.ALCHEMY_API_KEY || "oKxs-03sij-U_N0iOlrSsZFr29-IqbuF";
+const providerApiKey = process.env.ALCHEMY_API_KEY || "";
 // If not set, it uses the hardhat account 0 private key.
 const deployerPrivateKey =
-  process.env.DEPLOYER_PRIVATE_KEY ?? "0xac0974bec39a17e36ba4a6b4d238ff944bacb478cbed5efcae784d7bf4f2ff80";
+  process.env.DEPLOYER_PRIVATE_KEY ?? "";
 // If not set, it uses ours Etherscan default API key.
-const etherscanApiKey = process.env.ETHERSCAN_API_KEY || "DNXJA8RX2Q3VZ4URQIWP7Z68CJXQZSC6AW";
+const etherscanApiKey = process.env.ETHERSCAN_API_KEY || "";
 
 const config: HardhatUserConfig = {
   solidity: {
@@ -30,7 +30,7 @@ const config: HardhatUserConfig = {
       },
     },
   },
-  defaultNetwork: "sepolia",
+  defaultNetwork: "bsc_testnet",
   namedAccounts: {
     deployer: {
       // By default, it will take the first Hardhat account as the deployer
@@ -52,6 +52,15 @@ const config: HardhatUserConfig = {
     },
     sepolia: {
       url: `https://eth-sepolia.g.alchemy.com/v2/${providerApiKey}`,
+      accounts: [deployerPrivateKey],
+    },
+    bsc: {
+      url: `https://bsc-mainnet.alchemyapi.io/v2/${providerApiKey}`,
+      accounts: [deployerPrivateKey],
+    },
+    
+    bsc_testnet: {
+      url: `https://smart-icy-diagram.bsc-testnet.quiknode.pro/52458c529a8ed004f7ded015653d7c141bb11f41/`,
       accounts: [deployerPrivateKey],
     },
     arbitrum: {
@@ -76,6 +85,10 @@ const config: HardhatUserConfig = {
     },
     polygonMumbai: {
       url: `https://polygon-mumbai.g.alchemy.com/v2/${providerApiKey}`,
+      accounts: [deployerPrivateKey],
+    },
+    polygonAmoy: {
+      url: `https://dimensional-young-bird.matic-amoy.quiknode.pro/38491c027002ed72ada95e527c133b09a594730c/`,
       accounts: [deployerPrivateKey],
     },
     polygonZkEvm: {
